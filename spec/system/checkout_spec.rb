@@ -599,7 +599,7 @@ describe 'Checkout', type: :system, inaccessible: true do
     end
   end
 
-  context "with attempted XSS", js: true do
+  context "with attempted XSS", js: true, retry: 3 do
     shared_examples "safe from XSS" do
       # We need a country with states required but no states so that we have
       # access to the state_name input

@@ -651,9 +651,11 @@ describe 'Checkout', type: :system, inaccessible: true do
     let(:xss_string) { %(<script>throw("XSS")</script>) }
     include_examples "safe from XSS"
 
-    context "escaped XSS string" do
-      let(:xss_string) { '\x27\x3e\x3cscript\x3ethrow(\x27XSS\x27)\x3c/script\x3e' }
-      include_examples "safe from XSS"
+    100.times do |i|
+      context "escaped XSS string #{i}", :focus do
+        let(:xss_string) { '\x27\x3e\x3cscript\x3ethrow(\x27XSS\x27)\x3c/script\x3e' }
+        include_examples "safe from XSS"
+      end
     end
   end
 

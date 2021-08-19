@@ -5,15 +5,15 @@ module SolidusStarterFrontend
     source_root File.expand_path('../../..', __dir__)
 
     def install
-      # solidus_dev_support 2.5.0 depends on this puma version.
-      gsub_file 'Gemfile', /gem ['"]puma['"].*/, "# gem 'puma' # solidus_dev_support 2.5.0 depends on puma ~> 4.3. See puma declaration below."
-      gem 'puma', '~> 4.3'
-
       gem_group :development, :test do
         gem 'apparition', '~> 0.6.0'
         gem 'rails-controller-testing', '~> 1.0.5'
         gem 'rspec-activemodel-mocks', '~> 1.1.0'
-        gem 'solidus_dev_support', '~> 2.0'
+
+        gem 'solidus_dev_support',
+          '~> 2.0',
+          git: 'https://github.com/nebulab/solidus_dev_support.git',
+          branch: 'gsmendoza/eng-211-loosen-puma-version-constraint-in'
       end
 
       # Copy spec files

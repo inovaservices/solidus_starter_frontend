@@ -45,13 +45,18 @@ commands:
           command: |
             bundle config --local path vendor/bundle/<<parameters.branch>>
             bundle install
+            pwd
+            ls -l vendor/bundle/<<parameters.branch>>
             bundle clean
           environment:
             SOLIDUS_BRANCH: <<parameters.branch>>
           when: always
       - run:
           name: 'Solidus <<parameters.branch>>:  Install sandbox with generated starter frontend'
-          command: bin/sandbox
+          command: |
+            bin/sandbox
+            pwd
+            ls -l vendor/bundle/<<parameters.branch>>
           environment:
             GENERATE_FRONTEND: 1
             SANDBOX_BUNDLE_PATH: ../vendor/bundle/<<parameters.branch>>

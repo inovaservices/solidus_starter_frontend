@@ -46,7 +46,7 @@ commands:
             bundle config --local path vendor/bundle/<<parameters.branch>>
             bundle install
             pwd
-            ls -l vendor/bundle/<<parameters.branch>>
+            ls --full-time vendor/bundle/<<parameters.branch>>
             bundle clean
           environment:
             SOLIDUS_BRANCH: <<parameters.branch>>
@@ -56,7 +56,7 @@ commands:
           command: |
             bin/sandbox
             pwd
-            ls -l vendor/bundle/<<parameters.branch>>
+            ls --full-time vendor/bundle/<<parameters.branch>>
           environment:
             GENERATE_FRONTEND: 1
             SANDBOX_BUNDLE_PATH: ../vendor/bundle/<<parameters.branch>>

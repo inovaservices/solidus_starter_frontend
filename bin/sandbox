@@ -123,6 +123,8 @@ bundle exec rails generate solidus:install \
   --enforce_available_locales=true \
   --with-authentication=false \
   --payment-method=none \
+  --seed=false \
+  --sample=false \
   $@
 
 bundle exec rails generate solidus:auth:install --auto-run-migrations

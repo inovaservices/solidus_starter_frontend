@@ -8,5 +8,4 @@ require 'solidus_auth_devise'
 require 'solidus_support'
 
 require 'solidus_starter_frontend/version'
-require 'solidus_starter_frontend/config'
 require 'solidus_starter_frontend/engine'

@@ -11,27 +11,27 @@ ignore:
     diffs:
       - file: frontend/app/controllers/spree/checkout_controller.rb
         skip: true
-      - file: app/controllers/spree/user_confirmations_controller.rb
+      - file: src/base/app/controllers/spree/user_confirmations_controller.rb
         skip: true
-      - file: app/controllers/spree/user_passwords_controller.rb
+      - file: src/base/app/controllers/spree/user_passwords_controller.rb
         skip: true
-      - file: app/controllers/spree/user_registrations_controller.rb
+      - file: src/base/app/controllers/spree/user_registrations_controller.rb
         skip: true
-      - file: app/controllers/spree/users_controller.rb
+      - file: src/base/app/controllers/spree/users_controller.rb
         skip: true
-      - file: app/controllers/spree/user_sessions_controller.rb
+      - file: src/base/app/controllers/spree/user_sessions_controller.rb
         skip: true
-      - file: app/controllers/concerns/solidus_starter_frontend/taxonomies.rb
+      - file: src/base/app/controllers/concerns/solidus_starter_frontend/taxonomies.rb
         skip: true
-      - hash: 1422395649
+      - hash: 3586513382
         file: frontend/app/controllers/spree/coupon_codes_controller.rb
-      - hash: 2175977023
+      - hash: 590146522
         file: frontend/app/controllers/spree/home_controller.rb
-      - hash: 61096156
+      - hash: 2361514903
         file: frontend/app/controllers/spree/products_controller.rb
-      - hash: 1682079912
+      - hash: 1580766074
         file: frontend/app/controllers/spree/store_controller.rb
-      - hash: 910927973
+      - hash: 1049156053
         file: frontend/app/controllers/spree/taxons_controller.rb
       - hash: 3587971972
         file: frontend/app/controllers/spree/content_controller.rb

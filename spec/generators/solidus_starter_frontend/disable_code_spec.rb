@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'tempfile'
-require 'solidus_starter_frontend_helper'
+require 'spec_helper'
 require 'generators/solidus_starter_frontend/disable_code.rb'
 
 module SolidusStarterFrontend

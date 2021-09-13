@@ -16,16 +16,9 @@ module Spree
     before_action :ensure_valid_state
 
     before_action :associate_user
-    before_action :check_registration, except: [:registration, :update_registration] # SolidusStarterFrontendGenerator/with-authentication/line
     before_action :check_authorization
 
     before_action :setup_for_current_state, only: [:edit, :update]
-
-    # SolidusStarterFrontendGenerator/with-authentication/start
-    # This action builds some associations on the order, ex. addresses, which we
-    # don't need to build or save here.
-    skip_before_action :setup_for_current_state, only: [:registration, :update_registration]
-    # SolidusStarterFrontendGenerator/with-authentication/end
 
     helper 'spree/orders'
 
@@ -53,24 +46,6 @@ module Spree
         render :edit
       end
     end
-
-    # SolidusStarterFrontendGenerator/with-authentication/start
-
-    def registration
-      @user = Spree::User.new
-    end
-
-    def update_registration
-      if params[:order][:email] =~ Devise.email_regexp && current_order.update(email: params[:order][:email])
-        redirect_to spree.checkout_path
-      else
-        flash[:registration_error] = t(:email_is_invalid, scope: [:errors, :messages])
-        @user = Spree::User.new
-        render 'registration'
-      end
-    end
-
-    # SolidusStarterFrontendGenerator/with-authentication/end
 
     private
 
@@ -255,8 +230,6 @@ module Spree
       end
     end
 
-    # SolidusStarterFrontendGenerator/without-authentication/start
-
     # Should be overriden if you have areas of your checkout that don't match
     # up to a step within checkout_steps, such as a registration step
     def skip_state_validation?
@@ -267,51 +240,5 @@ module Spree
     def completion_route
       spree.order_path(@order)
     end
-
-    # SolidusStarterFrontendGenerator/without-authentication/end
-
-    # SolidusStarterFrontendGenerator/with-authentication/start
-
-    def order_params
-      params.
-        fetch(:order, {}).
-        permit(:email)
-    end
-
-    def skip_state_validation?
-      %w(registration update_registration).include?(params[:action])
-    end
-
-    # Introduces a registration step whenever the +registration_step+ preference is true.
-    def check_registration
-      return unless registration_required?
-
-      store_location
-      redirect_to spree.checkout_registration_path
-    end
-
-    def registration_required?
-      Spree::Auth::Config[:registration_step] &&
-        !already_registered?
-    end
-
-    def already_registered?
-      spree_current_user || guest_authenticated?
-    end
-
-    def guest_authenticated?
-      current_order&.email.present? &&
-        Spree::Config[:allow_guest_checkout]
-    end
-
-    # Overrides the equivalent method defined in Spree::Core.  This variation of the method will ensure that users
-    # are redirected to the tokenized order url unless authenticated as a registered user.
-    def completion_route
-      return spree.order_path(@order) if spree_current_user
-
-      spree.token_order_path(@order, @order.guest_token)
-    end
-
-    # SolidusStarterFrontendGenerator/with-authentication/end
   end
 end

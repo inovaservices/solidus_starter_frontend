@@ -1,0 +1,25 @@
+.product-variants {
+  margin: 0 0 3rem;
+
+  &__title {
+    font-size: $h6-font-size;
+    text-transform: uppercase;
+  }
+
+  &__list {
+    font-size: $font-size-small;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      align-items: center;
+      display: flex;
+      margin: 0 0 1.2rem;
+
+      label {
+        margin: 0 0 0 .5rem;
+      }
+    }
+  }
+}

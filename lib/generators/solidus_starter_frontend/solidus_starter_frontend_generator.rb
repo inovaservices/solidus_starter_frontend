@@ -6,32 +6,13 @@ require_relative 'disable_code'
 require_relative 'remove_markers'
 
 class SolidusStarterFrontendGenerator < Rails::Generators::Base
-  PATHS_WITH_AUTHENTICATION_CODE = [
-    'app/controllers/spree/checkout_controller.rb',
-    'app/views/spree/components/layout/_top_bar.html.erb',
-    'config/routes.rb'
-  ]
+  PATHS_WITH_AUTHENTICATION_CODE = []
 
   PATHS_WITH_NON_AUTHENTICATION_CODE = [
     'app/controllers/spree/checkout_controller.rb'
   ]
 
-  AUTHENTICATION_PATHS = [
-      'app/controllers/spree/user_confirmations_controller.rb',
-      'app/controllers/spree/user_passwords_controller.rb',
-      'app/controllers/spree/user_registrations_controller.rb',
-      'app/controllers/spree/users_controller.rb',
-      'app/controllers/spree/user_sessions_controller.rb',
-      'app/decorators/spree/checkout_controller_decorator.rb',
-      'app/mailers/spree/user_mailer.rb',
-      'app/views/spree/checkout/registration.html.erb',
-      'app/views/spree/components/navigation/_auth_link.html.erb',
-      'app/views/spree/user_mailer',
-      'app/views/spree/user_passwords',
-      'app/views/spree/user_registrations',
-      'app/views/spree/users',
-      'app/views/spree/user_sessions'
-    ]
+  AUTHENTICATION_PATHS = []
 
   source_root File.expand_path('../../../src/base', __dir__)
 

@@ -1,0 +1,7 @@
+<%= render partial: 'spree/components/presentation/hero' %>
+
+<article>
+  <% cache(cache_key_for_products) do %>
+    <%= render partial: 'spree/components/products/products', locals: { products: @products } %>
+  <% end %>
+</article>

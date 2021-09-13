@@ -1,0 +1,34 @@
+.search-bar {
+  border: solid 1px $color-border-medium;
+  border-radius: 2px;
+  display: flex;
+  font-size: $input-font-size;
+  height: 4.6rem;
+  position: relative;
+
+  &__select {
+    appearance: none;
+    background: $color-background-light;
+    border: 0;
+    border-radius: 0;
+    border-right: solid 1px $color-accent;
+    display: none;
+    padding: 0 2rem;
+  }
+
+  &__input {
+    border: 0;
+    flex-grow: 1;
+    padding: 0 2rem;
+    outline: none;
+  }
+
+  &__button {
+    background: $color-background-light;
+    border: 0;
+    border-left: 1px solid $color-border-medium;
+    color: $color-copy-light;
+    font-weight: $buttons-font-weight;
+    padding: 0 2rem;
+  }
+}

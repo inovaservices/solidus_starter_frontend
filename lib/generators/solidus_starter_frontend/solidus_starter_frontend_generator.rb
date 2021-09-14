@@ -54,7 +54,7 @@ class SolidusStarterFrontendGenerator < Rails::Generators::Base
 
     # Authentication
     if include_authentication?
-      invoke 'solidus_starter_frontend:authentication', [], 'skip-authentication' => options['skip-authentication']
+      invoke 'solidus_starter_frontend:authentication', [], force: true
     end
   end
 

@@ -18,7 +18,7 @@ module SolidusStarterFrontend
       copy_file 'spec/solidus_starter_frontend_helper.rb'
       copy_file 'spec/support/solidus_starter_frontend/features/fill_addresses_fields.rb'
       copy_file 'spec/support/solidus_starter_frontend/system_helpers.rb'
-      copy_file 'spec/system/authentication'
+      directory 'spec/system/authentication'
       copy_file 'spec/system/checkout_spec.rb'
     end
   end

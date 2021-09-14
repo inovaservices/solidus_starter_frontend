@@ -17,15 +17,15 @@ module SolidusStarterFrontend
       copy_file 'app/views/spree/checkout/registration.html.erb'
       copy_file 'app/views/spree/components/layout/_top_bar.html.erb'
       copy_file 'app/views/spree/components/navigation/_auth_link.html.erb'
-      copy_file 'app/views/spree/user_mailer'
-      copy_file 'app/views/spree/user_passwords'
-      copy_file 'app/views/spree/user_registrations'
-      copy_file 'app/views/spree/user_sessions'
-      copy_file 'app/views/spree/users'
+      directory 'app/views/spree/user_mailer'
+      directory 'app/views/spree/user_passwords'
+      directory 'app/views/spree/user_registrations'
+      directory 'app/views/spree/user_sessions'
+      directory 'app/views/spree/users'
       copy_file 'config/initializers/solidus_auth_devise_unauthorized_redirect.rb'
       copy_file 'config/routes.rb'
 
-      invoke 'solidus_starter_frontend:authentication_rspec' if include_specs?
+      invoke 'solidus_starter_frontend:authentication_rspec', [], force: true if include_specs?
     end
 
     private

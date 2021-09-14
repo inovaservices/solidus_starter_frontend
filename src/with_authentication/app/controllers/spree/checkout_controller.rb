@@ -16,16 +16,14 @@ module Spree
     before_action :ensure_valid_state
 
     before_action :associate_user
-    before_action :check_registration, except: [:registration, :update_registration] # SolidusStarterFrontendGenerator/with-authentication/line
+    before_action :check_registration, except: [:registration, :update_registration]
     before_action :check_authorization
 
     before_action :setup_for_current_state, only: [:edit, :update]
 
-    # SolidusStarterFrontendGenerator/with-authentication/start
     # This action builds some associations on the order, ex. addresses, which we
     # don't need to build or save here.
     skip_before_action :setup_for_current_state, only: [:registration, :update_registration]
-    # SolidusStarterFrontendGenerator/with-authentication/end
 
     helper 'spree/orders'
 
@@ -54,8 +52,6 @@ module Spree
       end
     end
 
-    # SolidusStarterFrontendGenerator/with-authentication/start
-
     def registration
       @user = Spree::User.new
     end
@@ -69,8 +65,6 @@ module Spree
         render 'registration'
       end
     end
-
-    # SolidusStarterFrontendGenerator/with-authentication/end
 
     private
 
@@ -255,23 +249,6 @@ module Spree
       end
     end
 
-    # SolidusStarterFrontendGenerator/without-authentication/start
-
-    # Should be overriden if you have areas of your checkout that don't match
-    # up to a step within checkout_steps, such as a registration step
-    def skip_state_validation?
-      false
-    end
-
-    # Provides a route to redirect after order completion
-    def completion_route
-      spree.order_path(@order)
-    end
-
-    # SolidusStarterFrontendGenerator/without-authentication/end
-
-    # SolidusStarterFrontendGenerator/with-authentication/start
-
     def order_params
       params.
         fetch(:order, {}).
@@ -311,7 +288,5 @@ module Spree
 
       spree.token_order_path(@order, @order.guest_token)
     end
-
-    # SolidusStarterFrontendGenerator/with-authentication/end
   end
 end

@@ -23,7 +23,10 @@ module SolidusStarterFrontend
       directory 'app/views/spree/user_sessions'
       directory 'app/views/spree/users'
       copy_file 'config/initializers/solidus_auth_devise_unauthorized_redirect.rb'
-      copy_file 'config/routes.rb'
+
+      # Routes
+      copy_file 'config/routes.rb', 'tmp/routes.rb'
+      prepend_file 'config/routes.rb', File.read('tmp/routes.rb')
 
       invoke 'solidus_starter_frontend:authentication_rspec', [], force: true if include_specs?
     end

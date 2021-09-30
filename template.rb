@@ -1,3 +1,4 @@
+require 'bundler'
 
 # Copied from: https://github.com/mattbrictson/rails-template
 # Add this template directory to source_paths so that Thor actions like
@@ -33,6 +34,31 @@ end
 
 add_template_repository_to_source_path
 
+# Add Solidus gems
+
+solidus_repo = ENV['SOLIDUS_REPO']
+solidus_branch = ENV['SOLIDUS_BRANCH']
+
+if solidus_repo && solidus_branch
+  gem 'solidus_core', github: solidus_repo, branch: solidus_branch
+  gem 'solidus_api', github: solidus_repo, branch: solidus_branch
+  gem 'solidus_backend', github: solidus_repo, branch: solidus_branch
+  gem 'solidus_sample', github: solidus_repo, branch: solidus_branch
+else
+  gem 'solidus_core'
+  gem 'solidus_api'
+  gem 'solidus_backend'
+  gem 'solidus_sample'
+end
+
+Bundler.with_original_env do
+  run 'bundle install'
+end
+
+Bundler.with_original_env do
+  generate 'solidus:install', '--auto-accept', '--with-authentication=true', '--payment-method=paypal'
+end
+
 directory 'app', 'app'
 
 # Copy files
@@ -50,7 +76,9 @@ gem 'canonical-rails'
 gem 'solidus_support'
 gem 'truncate_html'
 
-run_bundle
+Bundler.with_original_env do
+  run 'bundle install'
+end
 
 # Text updates
 append_file 'config/initializers/assets.rb', "Rails.application.config.assets.precompile += ['solidus_starter_frontend_manifest.js']"
@@ -67,8 +95,12 @@ gem_group :development, :test do
   gem 'solidus_dev_support', '~> 2.5'
 end
 
-run_bundle
+Bundler.with_original_env do
+  run 'bundle install'
+end
 
 directory 'spec'
 
-generate 'rspec:install'
+Bundler.with_original_env do
+  generate 'rspec:install'
+end

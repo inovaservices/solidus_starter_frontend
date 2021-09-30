@@ -24,12 +24,6 @@ case "${DB}" in
     ;;
 esac
 
-if [[ -n "${SOLIDUS_BRANCH}" ]]; then
-  branch="${SOLIDUS_BRANCH}"
-else
-  branch="master"
-fi
-
 extension_name="solidus_starter_frontend"
 
 sandbox_name='sandbox'
@@ -40,7 +34,9 @@ bundle init
 bundle add rails
 
 rm -rf "${sandbox_path}"
-bundle exec rails new "${sandbox_name}" --database="${railsdb}" \
+bundle exec rails new "${sandbox_name}" \
+  --template='template.rb' \
+  --database="${railsdb}" \
   --skip-bundle \
   --skip-git \
   --skip-keeps \
@@ -55,25 +51,6 @@ if [[ ! -d "${sandbox_name}" ]]; then
 fi
 
 cd "${sandbox_path}"
-cat >> Gemfile <<RUBY
-# By default, the solidus gem also includes the standard frontend via
-# the solidus_frontend gem. To make this extension work, you need to
-# exclude it and manually include all the other Solidus components.
-
-solidus_repo = ENV.fetch('SOLIDUS_REPO', 'solidusio/solidus')
-solidus_branch = ENV.fetch('SOLIDUS_BRANCH', 'master')
-solidus_i18n_repo = ENV.fetch('SOLIDUS_I18N_REPO', 'solidusio/solidus_i18n')
-solidus_i18n_branch = ENV.fetch('SOLIDUS_I18N_BRANCH', 'master')
-
-gem 'solidus_core', github: solidus_repo, branch: solidus_branch
-gem 'solidus_api', github: solidus_repo, branch: solidus_branch
-gem 'solidus_backend', github: solidus_repo, branch: solidus_branch
-gem 'solidus_sample', github: solidus_repo, branch: solidus_branch
-gem 'solidus_i18n', github: solidus_i18n_repo, branch: solidus_i18n_branch
-
-gem 'rails-i18n'
-gem 'solidus_auth_devise'
-RUBY
 
 replace_in_database_yml() {
   if [[ "${railsdb}" == "postgresql" ]]; then
@@ -99,31 +76,22 @@ if [[ -n "${password}" ]]; then
   replace_in_database_yml "password" "${password}"
 fi
 
-if [[ -n "${SANDBOX_BUNDLE_PATH}" ]]; then
-  bundle config --local path "${SANDBOX_BUNDLE_PATH}"
-fi
-
-bundle install --gemfile Gemfile
-
-bundle exec rake db:drop db:create
-
-bundle exec rails generate solidus:install \
-  --auto-accept \
-  --user_class=Spree::User \
-  --enforce_available_locales=true \
-  --with-authentication=false \
-  --payment-method=none \
-  "$@"
-
-bundle exec rails generate solidus:auth:install --auto-run-migrations
-
-LOCATION='../template.rb' bundle exec rails app:template
+RAILS_ENV=test bundle exec rake db:drop db:create
 
 rm ../Gemfile ../Gemfile.lock
 
 echo
 echo "🚀 Sandbox app successfully created for ${extension_name}!"
-echo "🚀 Using ${railsdb} and Solidus ${branch}"
+echo "🚀 Using ${railsdb}"
+
+if [[ -n "${SOLIDUS_REPO}" ]]; then
+  echo "🚀 Using Solidus repo ${SOLIDUS_REPO}"
+fi
+
+if [[ -n "${SOLIDUS_BRANCH}" ]]; then
+  echo "🚀 Using Solidus branch ${SOLIDUS_BRANCH}"
+fi
+
 echo "🚀 Use 'export DB=[postgres|mysql|sqlite]' to control the DB adapter"
 echo "🚀 Use 'export SOLIDUS_BRANCH=<BRANCH-NAME>' to control the Solidus version"
 echo "🚀 This app is intended for test purposes."

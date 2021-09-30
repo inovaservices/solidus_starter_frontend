@@ -13,6 +13,9 @@ commands:
       Runs tests for a specific Solidus branch.
 
     parameters:
+      repo:
+        type: string
+        default: solidusio/solidus
       branch:
         type: string
         default: master
@@ -28,23 +31,20 @@ commands:
     steps:
       - run:
           name: 'Solidus <<parameters.branch>>:  Set bundle path'
-          command: |
-            bundle config --local path vendor/bundle/<<parameters.branch>>
-          environment:
-            SOLIDUS_BRANCH: <<parameters.branch>>
+          command: bundle config --local path vendor/bundle/<<parameters.branch>>
           when: always
       - run:
           name: 'Solidus <<parameters.branch>>:  Install sandbox with generated starter frontend'
           command: bin/sandbox --seed=false --sample=false
           environment:
             SANDBOX_BUNDLE_PATH: ../vendor/bundle/<<parameters.branch>>
+            SOLIDUS_REPO: <<parameters.repo>>
             SOLIDUS_BRANCH: <<parameters.branch>>
           when: always
       - run:
           name: '<<parameters.command_verb>> on Solidus <<parameters.branch>>'
           command: <<parameters.command>>
           environment:
-            SOLIDUS_BRANCH: <<parameters.branch>>
             TEST_RESULTS_PATH: ../test-results/gems-v3-ruby-v2-5-6-solidus-<<parameters.branch>>/results.xml
           when: always
       - run:

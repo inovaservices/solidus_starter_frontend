@@ -1,5 +1,15 @@
 require 'bundler'
 
+def install
+  add_template_repository_to_source_path
+  install_gems
+  install_solidus
+  copy_solidus_starter_frontend_files
+  update_asset_files
+  require_solidus_starter_frontend_config
+  install_rspec
+end
+
 # Copied from: https://github.com/mattbrictson/rails-template
 # Add this template directory to source_paths so that Thor actions like
 # copy_file and template resolve against our source files. If this file was
@@ -32,75 +42,82 @@ def add_template_repository_to_source_path
   source_paths.unshift(templates_dir)
 end
 
-add_template_repository_to_source_path
+def install_gems
+  add_solidus_gems
+  add_solidus_starter_frontend_dependencies
+  add_spec_gems
 
-# Add Solidus gems
-
-solidus_repo = ENV['SOLIDUS_REPO']
-solidus_branch = ENV['SOLIDUS_BRANCH']
-
-if solidus_repo && solidus_branch
-  gem 'solidus_core', github: solidus_repo, branch: solidus_branch
-  gem 'solidus_api', github: solidus_repo, branch: solidus_branch
-  gem 'solidus_backend', github: solidus_repo, branch: solidus_branch
-  gem 'solidus_sample', github: solidus_repo, branch: solidus_branch
-else
-  gem 'solidus_core'
-  gem 'solidus_api'
-  gem 'solidus_backend'
-  gem 'solidus_sample'
+  Bundler.with_original_env do
+    run 'bundle install'
+  end
 end
 
-Bundler.with_original_env do
-  run 'bundle install'
+def add_solidus_gems
+  solidus_repo = ENV['SOLIDUS_REPO']
+  solidus_branch = ENV['SOLIDUS_BRANCH']
+
+  if solidus_repo && solidus_branch
+    gem 'solidus_core', github: solidus_repo, branch: solidus_branch
+    gem 'solidus_api', github: solidus_repo, branch: solidus_branch
+    gem 'solidus_backend', github: solidus_repo, branch: solidus_branch
+    gem 'solidus_sample', github: solidus_repo, branch: solidus_branch
+  else
+    gem 'solidus_core'
+    gem 'solidus_api'
+    gem 'solidus_backend'
+    gem 'solidus_sample'
+  end
 end
 
-Bundler.with_original_env do
-  generate 'solidus:install', '--auto-accept', '--with-authentication=true', '--payment-method=paypal'
+def add_solidus_starter_frontend_dependencies
+  gem 'canonical-rails'
+  gem 'solidus_support'
+  gem 'truncate_html'
 end
 
-directory 'app', 'app'
-
-# Copy files
-copy_file 'lib/solidus_starter_frontend_configuration.rb'
-copy_file 'lib/solidus_starter_frontend/config.rb'
-copy_file 'config/initializers/solidus_auth_devise_unauthorized_redirect.rb'
-copy_file 'config/initializers/canonical_rails.rb'
-
-# Routes
-copy_file 'config/routes.rb', 'tmp/routes.rb'
-prepend_file 'config/routes.rb', File.read('tmp/routes.rb')
-
-# Gems
-gem 'canonical-rails'
-gem 'solidus_support'
-gem 'truncate_html'
-
-Bundler.with_original_env do
-  run 'bundle install'
+def add_spec_gems
+  gem_group :development, :test do
+    gem 'rspec-rails'
+    gem 'apparition', '~> 0.6.0'
+    gem 'rails-controller-testing', '~> 1.0.5'
+    gem 'rspec-activemodel-mocks', '~> 1.1.0'
+    gem 'solidus_dev_support', '~> 2.5'
+  end
 end
 
-# Text updates
-append_file 'config/initializers/assets.rb', "Rails.application.config.assets.precompile += ['solidus_starter_frontend_manifest.js']"
-inject_into_file 'config/initializers/spree.rb', "require_relative Rails.root.join('lib/solidus_starter_frontend/config')\n", before: /Spree.config do/, verbose: true
-gsub_file 'app/assets/stylesheets/application.css', '*= require_tree', '* OFF require_tree'
-
-# Specs
-
-gem_group :development, :test do
-  gem 'rspec-rails'
-  gem 'apparition', '~> 0.6.0'
-  gem 'rails-controller-testing', '~> 1.0.5'
-  gem 'rspec-activemodel-mocks', '~> 1.1.0'
-  gem 'solidus_dev_support', '~> 2.5'
+def install_solidus
+  Bundler.with_original_env do
+    generate 'solidus:install', '--auto-accept', '--with-authentication=true', '--payment-method=paypal'
+  end
 end
 
-Bundler.with_original_env do
-  run 'bundle install'
+def copy_solidus_starter_frontend_files
+  directory 'app', 'app'
+
+  copy_file 'lib/solidus_starter_frontend_configuration.rb'
+  copy_file 'lib/solidus_starter_frontend/config.rb'
+  copy_file 'config/initializers/solidus_auth_devise_unauthorized_redirect.rb'
+  copy_file 'config/initializers/canonical_rails.rb'
+
+  copy_file 'config/routes.rb', 'tmp/routes.rb'
+  prepend_file 'config/routes.rb', File.read('tmp/routes.rb')
+
+  directory 'spec'
 end
 
-directory 'spec'
-
-Bundler.with_original_env do
-  generate 'rspec:install'
+def update_asset_files
+  append_file 'config/initializers/assets.rb', "Rails.application.config.assets.precompile += ['solidus_starter_frontend_manifest.js']"
+  gsub_file 'app/assets/stylesheets/application.css', '*= require_tree', '* OFF require_tree'
 end
+
+def require_solidus_starter_frontend_config
+  inject_into_file 'config/initializers/spree.rb', "require_relative Rails.root.join('lib/solidus_starter_frontend/config')\n", before: /Spree.config do/, verbose: true
+end
+
+def install_rspec
+  Bundler.with_original_env do
+    generate 'rspec:install'
+  end
+end
+
+install

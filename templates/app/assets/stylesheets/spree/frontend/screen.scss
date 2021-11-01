@@ -18,7 +18,6 @@
 @import 'spree/frontend/components/auth/auth_container';
 @import 'spree/frontend/components/auth/auth_form';
 @import 'spree/frontend/components/brand/logo';
-@import 'spree/frontend/components/buttons/button_inline';
 @import 'spree/frontend/components/buttons/button_primary';
 @import 'spree/frontend/components/cart/cart_adjustments';
 @import 'spree/frontend/components/cart/cart_amount_row';
@@ -47,10 +46,7 @@
 @import 'spree/frontend/components/checkout/steps/delivery_step';
 @import 'spree/frontend/components/checkout/steps/payment_step';
 @import 'spree/frontend/components/forms/address_inputs';
-@import 'spree/frontend/components/forms/inputs/checkbox_input';
-@import 'spree/frontend/components/forms/inputs/radio_input';
 @import 'spree/frontend/components/forms/inputs/select_input';
-@import 'spree/frontend/components/forms/inputs/textarea_input';
 @import 'spree/frontend/components/forms/inputs/text';
 @import 'spree/frontend/components/general/flash';
 @import 'spree/frontend/components/layout/header';

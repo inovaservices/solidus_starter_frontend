@@ -12,9 +12,6 @@
         base_class: 'filter') %>
     <% end %>
 
-    <%= render 'spree/components/buttons/button_primary',
-      content: t('spree.search'),
-      type: :submit,
-      full_width: true %>
+    <%= button_tag t("spree.search"), class: 'button-primary button-primary--full-width' %>
   <% end %>
 <% end %>

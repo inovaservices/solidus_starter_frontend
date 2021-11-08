@@ -1,14 +1,14 @@
 <%
   # Props
   taxon = local_assigns.fetch(:taxon, nil)
-  separator = local_assigns.fetch(:separator, '&nbsp;&raquo;&nbsp;')
 
   # Methods
-  def breadcrumbs(taxon, separator)
+  def breadcrumbs(taxon)
     return '' if current_page?('/') || taxon.nil?
 
     base_class = 'breadcrumbs'
     breadcrumb_class = "#{base_class}__content"
+    separator = '&nbsp;&raquo;&nbsp;'
 
     crumbs = [[t('spree.home'), spree.root_path]]
 
@@ -44,4 +44,4 @@
   end
 %>
 
-<%= breadcrumbs(taxon, separator) %>
+<%= breadcrumbs(taxon) %>

@@ -2,11 +2,13 @@
   # Props
   taxon = local_assigns.fetch(:taxon, nil)
   separator = local_assigns.fetch(:separator, '&nbsp;&raquo;&nbsp;')
-  base_class = local_assigns.fetch(:base_class, nil)
 
   # Methods
-  def breadcrumbs(taxon, separator, breadcrumb_class = 'inline')
+  def breadcrumbs(taxon, separator)
     return '' if current_page?('/') || taxon.nil?
+
+    base_class = 'breadcrumbs'
+    breadcrumb_class = "#{base_class}__content"
 
     crumbs = [[t('spree.home'), spree.root_path]]
 
@@ -27,21 +29,19 @@
     end
 
     content_tag(
-      :nav,
+      :div,
       content_tag(
-        :ol,
-        raw(items.map(&:mb_chars).join),
-        itemscope: '',
-        itemtype: 'https://schema.org/BreadcrumbList'),
-      class: breadcrumb_class
+        :nav,
+        content_tag(
+          :ol,
+          raw(items.map(&:mb_chars).join),
+          itemscope: '',
+          itemtype: 'https://schema.org/BreadcrumbList'),
+        class: breadcrumb_class
+      ),
+      class: base_class
     )
   end
 %>
 
-<% breadcrumbs = breadcrumbs(taxon, separator, "#{base_class}__content") %>
-
-<% if breadcrumbs.present? %>
-  <div class="<%= base_class %>">
-    <%= breadcrumbs %>
-  </div>
-<% end %>
+<%= breadcrumbs(taxon, separator) %>

@@ -6,7 +6,7 @@
 
     <% filters.each do |filter| %>
       <%= render(
-        'spree/components/search/filter',
+        'spree/shared/search/filter',
         title: filter[:name],
         filter: filter,
         base_class: 'filter') %>

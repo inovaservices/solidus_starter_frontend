@@ -1,7 +1,4 @@
 <%
-  # Props
-  taxon = local_assigns.fetch(:taxon, nil)
-
   # Methods
   def breadcrumbs(taxon)
     return '' if current_page?('/') || taxon.nil?

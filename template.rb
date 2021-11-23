@@ -61,6 +61,8 @@ def add_spec_gems
     gem 'rspec-activemodel-mocks', '~> 1.1.0'
     gem 'solidus_dev_support', '~> 2.5'
   end
+
+  gsub_file 'Gemfile', "gem 'webdrivers'", "gem 'webdrivers', '~> 4.4'"
 end
 
 def copy_solidus_starter_frontend_files
